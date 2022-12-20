@@ -33,4 +33,4 @@ jobs:
             echo DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} > src/.env
             echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} > src/.env
             echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} > src/.env
-            docker-compose up -d --build
+            sudo docker-compose up -d --build
