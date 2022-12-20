@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+     - name: Deploy using SSH
+       uses: fifsky/ssh-action@master
+       with:
+          host: ${{ secrets.HOST_MY_SERVER }}
+          user: root
+          key: ${{ secrets.PRIVATE_KEY_MY_SERVER}}
+          command: |
+            cd /home/backend-music/
+            git pull origin master
+            git status
+            echo DEBUG=${{ secrets.DEBUG }} > src/.env
+            echo SECRET_KEY=${{ secrets.SECRET_KEY }} > src/.env
+            echo DATABASE_NAME=${{ secrets.DATABASE_NAME }} > src/.env
+            echo DATABASE_USER=${{ secrets.DATABASE_USER }} > src/.env
+            echo DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} > src/.env
+            echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} > src/.env
+            echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} > src/.env
+            docker-compose up -d --build
