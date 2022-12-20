@@ -22,10 +22,10 @@ services:
   web:
     restart: always
     build:
-      context: sd
-    command: bash -c 'python ./src/manage.py migrate && python ./src/manage.py runserver 0.0.0.0:8000'
+      context: ./src
+    command: bash -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8005'
     ports:
-      - "8000:8000"
+      - "8005:8005"
     volumes:
       - .:/app/
     depends_on:
