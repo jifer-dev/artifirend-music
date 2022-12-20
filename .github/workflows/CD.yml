@@ -5,6 +5,8 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    
+  workflow_dispatch:
 
 jobs:
 
@@ -14,12 +16,13 @@ jobs:
     
     steps:
      - name: Deploy using SSH
-       uses: fifsky/ssh-action@master
+       uses: appleboy/ssh-action@master
        with:
-          host: ${{ secrets.HOST_MY_SERVER }}
-          user: root
-          key: ${{ secrets.PRIVATE_KEY_MY_SERVER}}
-          command: |
+        host: ${{ secrets.HOST_MY_SERVER }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.PRIVATE_KEY_MY_SERVER }}
+        port: 22
+        script: |
             cd /home/backend-music/
             git pull origin master
             git status
@@ -30,4 +33,4 @@ jobs:
             echo DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} > src/.env
             echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} > src/.env
             echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} > src/.env
-            docker-compose up -d --build
+            sudo docker-compose up -d --build
