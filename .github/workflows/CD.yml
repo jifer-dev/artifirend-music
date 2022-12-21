@@ -24,9 +24,11 @@ jobs:
         port: 22
         script: |
             cd /home/backend-music/
+            
+            rm src/.env
             git pull origin master
             git status
-            rm src/.env
+            
             echo DEBUG=${{ secrets.DEBUG }} >> src/.env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> src/.env
             echo DATABASE_NAME=${{ secrets.DATABASE_NAME }} >> src/.env
