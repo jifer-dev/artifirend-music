@@ -4,6 +4,17 @@ networks:
   app-network:
 
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./hosts:/etc/nginx/conf.d
+      - ./www:/var/www
+      - ./logs/nginx:/var/log/nginx
+    links:
+      - php
 
   postgresql-db:
     restart: always
@@ -23,9 +34,9 @@ services:
     restart: always
     build:
       context: ./src
-    command: bash -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8005'
+    command: bash -c 'python manage.py migrate && gunicorn --bind :8000 --workers 3 core.wsgi'
     ports:
-      - "8005:8005"
+      - "8000:8000"
     volumes:
       - .:/app/
     depends_on:
