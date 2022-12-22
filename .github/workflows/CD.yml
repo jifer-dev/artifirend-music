@@ -25,7 +25,7 @@ jobs:
       - name: Run tests and collect coverage
         run: |
           cd src
-          pytest --cov app
+          coverage run --rcfile=coverage.cfg manage.py test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
