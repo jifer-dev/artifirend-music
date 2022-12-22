@@ -24,6 +24,8 @@ jobs:
         run: pip install -r src/requirements.txt
       - name: Run tests and collect coverage
         run: |
+          echo DEBUG=${{ secrets.DEBUG }} >> src/.env
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> src/.env
           cd src
           coverage run --rcfile=coverage.cfg manage.py test
       - name: Upload coverage to Codecov
